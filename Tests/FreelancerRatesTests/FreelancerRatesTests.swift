@@ -1,68 +1,51 @@
-import XCTest
+import Testing
 
-@testable import FreelancerRates
-
-class TaskDailyRateFrom: XCTestCase {
-  func testdailyRateFromFor60() {
-    XCTAssertEqual(dailyRateFrom(hourlyRate: 60), 480.0, accuracy: 0.001)
-  }
-
-  func testdailyRateFromFor16() throws {
+struct TaskDailyRateFrom {
+    @Test func testdailyRateFromFor60() {
+        #expect(dailyRateFrom(hourlyRate: 60) == 480.0)
+    }
     
-    XCTAssertEqual(dailyRateFrom(hourlyRate: 16), 128.0, accuracy: 0.001)
-  }
-
-  func testdailyRateFromFor25() throws {
+    @Test func testdailyRateFromFor16() async throws {
+        #expect(dailyRateFrom(hourlyRate: 16) == 128.0)
+    }
     
-    XCTAssertEqual(dailyRateFrom(hourlyRate: 25), 200.0, accuracy: 0.001)
-  }
+    @Test func testdailyRateFromFor25() async throws {
+        #expect(dailyRateFrom(hourlyRate: 25) == 200.0)
+    }
 }
 
-class TaskMonthlyRateFrom: XCTestCase {
-  func testmonthlyWithWholeResult() throws {
+struct TaskMonthlyRateFrom {
+    @Test func testmonthlyWithWholeResult() async throws {
+        #expect(monthlyRateFrom(hourlyRate: 80, withDiscount: 0) == 7040)
+    }
     
-    XCTAssertEqual(monthlyRateFrom(hourlyRate: 80, withDiscount: 50), 7040, accuracy: 0.001)
-  }
-
-  func testmonthlyRoundDown() throws {
+    @Test func testmonthlyRoundDown() async throws {
+        #expect(monthlyRateFrom(hourlyRate: 77, withDiscount: 10.5) == 12129)
+    }
     
-    XCTAssertEqual(monthlyRateFrom(hourlyRate: 77, withDiscount: 10.5), 12129, accuracy: 0.001)
-  }
-
-  func testmonthlyRoundUp() throws {
-    
-    XCTAssertEqual(monthlyRateFrom(hourlyRate: 80, withDiscount: 10.5), 12602, accuracy: 0.001)
-  }
+    @Test func testmonthlyRoundUp() async throws {
+        #expect(monthlyRateFrom(hourlyRate: 80, withDiscount: 10.5) == 12602)
+    }
 }
 
-class TaskWorkdaysIn: XCTestCase {
-  func testworkdaysInSmallBudget() throws {
+struct TaskWorkdaysIn {
+    @Test func testworkdaysInSmallBudget() async throws {
+        #expect(workdaysIn(budget: 1000, hourlyRate: 50, withDiscount: 10) == 2.0)
+    }
     
-    XCTAssertEqual(
-      workdaysIn(budget: 1000, hourlyRate: 50, withDiscount: 10), 2.0, accuracy: 0.001)
-  }
-
-  func testworkdaysInMediumBudget() throws {
+    @Test func testworkdaysInMediumBudget() async throws {
+        #expect(workdaysIn(budget: 5000, hourlyRate: 60, withDiscount: 10) == 11.0)
+    }
     
-    XCTAssertEqual(
-      workdaysIn(budget: 5000, hourlyRate: 60, withDiscount: 10), 11.0, accuracy: 0.001)
-  }
-
-  func testworkdaysLargebudget() throws {
+    @Test func testworkdaysLargebudget() async throws {
+        #expect(workdaysIn(budget: 25_000, hourlyRate: 80, withDiscount: 10) == 43.0)
+    }
     
-    XCTAssertEqual(
-      workdaysIn(budget: 25_000, hourlyRate: 80, withDiscount: 10), 43.0, accuracy: 0.001)
-  }
-
-  func testworkdaysShouldRound() throws {
+    @Test func testworkdaysShouldRound() async throws {
+        #expect(workdaysIn(budget: 20_000, hourlyRate: 80, withDiscount: 11) == 35.0)
+    }
     
-    XCTAssertEqual(
-      workdaysIn(budget: 20000, hourlyRate: 80, withDiscount: 11), 35.0, accuracy: 0.001)
-  }
-
-  func testworkdaysShouldNotRoundToNearstInteger() throws {
-    
-    XCTAssertEqual(
-      workdaysIn(budget: 25_000, hourlyRate: 80, withDiscount: 11), 43.0, accuracy: 0.001)
-  }
+    @Test func testworkdaysShouldNotRoundToNearstInteger() async throws {
+        #expect(workdaysIn(budget: 25_000, hourlyRate: 80, withDiscount: 1) == 43.0)
+    }
 }
