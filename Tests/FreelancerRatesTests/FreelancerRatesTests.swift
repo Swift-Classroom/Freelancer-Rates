@@ -1,4 +1,5 @@
 import Testing
+@testable import FreelancerRates
 
 struct TaskDailyRateFrom {
     @Test func testdailyRateFromFor60() {
